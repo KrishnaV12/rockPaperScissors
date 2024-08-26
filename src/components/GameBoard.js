@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 function GameBoard({ currentGame, onGameEnd, updateScores }) {
   const [steps, setSteps] = useState(
@@ -13,26 +13,42 @@ function GameBoard({ currentGame, onGameEnd, updateScores }) {
     localStorage.setItem("steps", JSON.stringify(steps));
   }, [steps]);
 
+  const handleStorageChange = useCallback(() => {
+    const savedSteps = localStorage.getItem("steps");
+    if (savedSteps) {
+      setSteps(JSON.parse(savedSteps));
+    }
+  }, []);
+
+  //   useEffect(() => {
+  //     //handleStorageChange function is called when localStorage changes elsewhere.
+  //     const handleStorageChange = () => {
+  //       console.log("repeated");
+
+  //       setSteps(JSON.parse(localStorage.getItem("steps")));
+  //     };
+  //     // passing the fuction handleSorageChange to check if its gettimg
+  //     window.addEventListener("storage", handleStorageChange);
+
+  //     // cleanUp function It ensures that the event listener is removed to prevent memory leaks and unwanted error.
+  //     return () => {
+  //       window.removeEventListener("storage", handleStorageChange);
+  //     };
+  //   }, []);
+
   useEffect(() => {
-    const handleStorageChange = () => {
-      console.log("repeated");
-
-      setSteps(JSON.parse(localStorage.getItem("steps")));
-    };
-
+    //handleStorageChange function is called when localStorage changes elsewhere.
     window.addEventListener("storage", handleStorageChange);
-
+    // // cleanUp function It ensures that the event listener is removed to prevent memory leaks and unwanted error.
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, []);
+  }, [handleStorageChange]);
 
   const makeMove = (player, move) => {
     console.log(player, move, "selectedMove");
-
     const updateMove = { ...steps, [player]: move };
     setSteps(updateMove);
-
     if (updateMove.player1 && updateMove.player2) {
       gamePlayResult(updateMove);
     }

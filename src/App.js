@@ -3,7 +3,7 @@ import PlayerList from "./components/PlayerList";
 import GameBoard from "./components/GameBoard";
 import ScoreBoard from "./components/ScoreBoard";
 import WaitingList from "./components/WaitingList";
-import "./App.css"
+import "./App.css";
 
 function App() {
   const [players, setPlayers] = useState(
@@ -30,15 +30,16 @@ function App() {
   }, [players, currentGame, waitingList, scores]);
 
   useEffect(() => {
+    //whenever in other tab items getting chnage and handleStorageChange() call it updating the state with new values from local storage
     const handleStorageChange = () => {
       setPlayers(JSON.parse(localStorage.getItem("players")));
       setCurrentGame(JSON.parse(localStorage.getItem("currentGame")));
       setWaitingList(JSON.parse(localStorage.getItem("waitingList")));
       setScores(JSON.parse(localStorage.getItem("scores")));
     };
-
+    //registers an event listener for the storage event on the window object.
     window.addEventListener("storage", handleStorageChange);
-
+    // cleaning the storage
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
