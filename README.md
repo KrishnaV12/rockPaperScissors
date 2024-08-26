@@ -1,3 +1,7 @@
+this is a rock paper scissors game for the interview where user allowed to play from different tab was the objective.
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
